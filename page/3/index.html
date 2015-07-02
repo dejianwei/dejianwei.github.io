@@ -119,6 +119,123 @@
           
           
             
+              <a class="post-title-link" href="/2015/06/25/android-style-theme/">
+                android:style_theme
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於 2015-06-25
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <ol>
+<li><p>style说指用来指定view和windows的样式，可以写在xml文件中</p>
+<pre><code>&lt;TextView
+<span class="label">android:</span>layout_width=<span class="string">"fill_parent"</span>
+<span class="label">android:</span>layout_height=<span class="string">"wrap_content"</span>
+<span class="label">android:</span>textColor=<span class="string">"#00FF00"</span>
+<span class="label">android:</span>typeface=<span class="string">"monospace"</span>
+<span class="label">android:</span>text=<span class="string">"@string/hello"</span> /&gt;
+</code></pre></li>
+<li><p>但是你也可以这么写，这样是为了重复使用这些代码，适当的使用回报是巨大的</p>
+<pre><code>&lt;TextView
+ <span class="variable">style=</span><span class="string">"@style/CodeFont"</span>
+ android:<span class="variable">text=</span><span class="string">"@string/hello"</span> /&gt;
+</code></pre></li>
+<li><p>theme说适用与整个Activity或者application， 和view这样的Activity中独立的不宜眼，如果你把style可以用成theme，这样的话Activity中的所有view都会变成你设置的style，所以them就是一个全局的style</p>
+</li>
+<li><p>在res/resourse文件下建立一个.xml文件</p>
+<pre><code>&lt;?xml <span class="property">version</span>=<span class="string">"1.0"</span> encoding=<span class="string">"utf-8"</span>?&gt;
+&lt;resources&gt;
+&lt;style <span class="property">name</span>=<span class="string">"CodeFont"</span>       parent=<span class="string">"@android:style/TextAppearance.Medium"</span>&gt;
+&lt;<span class="property">item</span> <span class="property">name</span>=<span class="string">"android:layout_width"</span>&gt;fill_parent&lt;/<span class="property">item</span>&gt;
+&lt;<span class="property">item</span> <span class="property">name</span>=<span class="string">"android:layout_height"</span>&gt;wrap_content&lt;/<span class="property">item</span>&gt;
+&lt;<span class="property">item</span> <span class="property">name</span>=<span class="string">"android:textColor"</span>&gt;<span class="comment">#00FF00&lt;/item&gt;</span>
+&lt;<span class="property">item</span> <span class="property">name</span>=<span class="string">"android:typeface"</span>&gt;monospace&lt;/<span class="property">item</span>&gt;
+&lt;/style&gt;
+&lt;/resources&gt;
+</code></pre></li>
+</ol>
+<p>用 <code>@style/CodeFont</code>就可以引用到这个style<br><code>parent=</code>这个属性是可选的，表示继承那个属性，你也可以自己写一个继承，但是继承你自己写的style使用的方法不一样，不能用<code>parent</code>，而是使用 <code>.</code>,一下代码表示Red继承自CodeFont，你也可以多个继承<code>&lt;style name=&quot;CodeFont.Red.Big&quot;&gt;</code>但是注意，这个说自定义时使用的，要和<code>parent</code>分开</p>
+<pre><code>&lt;style name=<span class="string">"CodeFont.Red"</span>&gt;
+&lt;item name=<span class="string">"android:textColor"</span>&gt;<span class="hexcolor">#FF0000</span>&lt;/item&gt;
+&lt;/style&gt;
+</code></pre><ol>
+<li><p>对于使用的属性，要看你用的什么view了，有一些是通用的，比如<code>android:layout_width</code>，有一些是独特的<code>android:inputType</code>，这个属性应该放在<code>&lt;EditText /&gt;</code>里面，具体可以到api里面查。另外大部分情况下<code>style</code>可以用作<code>theme</code>，但是<code>theme</code>有一些独特的属性，比如<code>windowNoTitle</code> and <code>windowBackground</code></p>
+</li>
+<li><p>如何使用：<code>style</code>用在.xml文件里</p>
+<pre><code>&lt;TextView
+<span class="variable">style=</span><span class="string">"@style/CodeFont"</span>
+android:<span class="variable">text=</span><span class="string">"@string/hello"</span> /&gt;
+</code></pre><p>theme用在<code>AndroidManifest.xml</code>里</p>
+<pre><code>&lt;<span class="type">application</span> android:theme=<span class="string">"@style/CustomTheme"</span>&gt;
+</code></pre><p>对于<code>viewgroup</code>里的<code>view</code>， <code>style</code>也是要一个一个指定的</p>
+</li>
+<li><p><code>theme</code>用在<code>AndroidManifest.xml</code>里</p>
+<pre><code>&lt;<span class="type">application</span> android:theme=<span class="string">"@style/CustomTheme"</span>&gt;
+</code></pre><p>andorid有很多已经做好的主题，比如像对话框一样的</p>
+<pre><code><span class="tag">&lt;<span class="title">activity</span> <span class="attribute">android:theme</span>=<span class="value">"@android:style/Theme.Dialog"</span>&gt;</span>
+</code></pre><p>比如背景透明的</p>
+<pre><code><span class="tag">&lt;<span class="title">activity</span> <span class="attribute">android:theme</span>=<span class="value">"@android:style/Theme.Translucent"</span>&gt;</span>
+</code></pre></li>
+<li><p>你可以进行改动，加上自己喜欢的</p>
+<pre><code>&lt;<span class="attribute">color</span> name=<span class="string">"custom_theme_color"</span>&gt;<span class="hexcolor">#b0b0ff</span>&lt;/<span class="attribute">color</span>&gt;
+&lt;style name=<span class="string">"CustomTheme"</span> parent=<span class="string">"android:Theme.Light"</span>&gt;
+&lt;item     name=<span class="string">"android:windowBackground"</span>&gt;@<span class="attribute">color</span>/custom_theme_color&lt;   /item&gt;
+&lt;item     name=<span class="string">"android:colorBackground"</span>&gt;@<span class="attribute">color</span>/custom_theme_color    &lt;/item&gt;
+&lt;/style&gt;
+</code></pre><p>注意这里的<code>android:windowBackground</code>使用了引用，因为这个属性只能提供引用，所以你要在另一个文件里制定，然后引用过来</p>
+</li>
+</ol>
+
+        
+      
+    </div>
+
+    <div class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </div>
+  </div>
+
+
+    
+      
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
               <a class="post-title-link" href="/2015/06/08/daily-2015-6-7/">
                 daily 2015/6/7
               </a>
@@ -408,7 +525,7 @@
         <div class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
@@ -422,7 +539,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>
